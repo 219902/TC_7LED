@@ -22,21 +22,13 @@
 
 module tb_decade_counter();
 
-/*
-module decade_counter(
-	input clk,
-	input load,
-	input enable,
-	input [3:0] data,
-	output reg [3:0] q
-    );
-*/
 reg clk;
 reg LOAD = 1'b1;
 reg ENABLE = 1'b0;
 reg [3:0] DATA = 1'b0000;
 wire [3:0] Q;
 
+//module decade_counter(input clk, input load, input enable, input [3:0] data, output reg [3:0] q);
 decade_counter uut(.clk(clk), .load(LOAD), .enable(ENABLE), .data(DATA), .q(Q));
 
 initial begin
