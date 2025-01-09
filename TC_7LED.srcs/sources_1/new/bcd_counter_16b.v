@@ -30,10 +30,10 @@ module bcd_counter_16b(
    wire [3:0] loads;
    wire [3:0] steps;
    
-   assign steps[0] = out[0] & out[2] & enable;
-   assign steps[1] = out[4] & out[6] & steps[0];
-   assign steps[2] = out[8] & out[10] & steps[1];
-   assign steps[3] = out[12] & out[14] & steps[2];
+   assign steps[0] = out[0] & out[3] & enable;
+   assign steps[1] = out[4] & out[7] & steps[0];
+   assign steps[2] = out[8] & out[11] & steps[1];
+   assign steps[3] = out[12] & out[15] & steps[2];
    
    assign loads[0] = reset |  steps[0];
    assign loads[1] = reset |  steps[1];
