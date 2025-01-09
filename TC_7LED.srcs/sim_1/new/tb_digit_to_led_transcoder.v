@@ -33,7 +33,7 @@ digit_to_led_transcoder uut(.digit(DIGIT), .leds(LEDS));
 //always@(*)
 //	for(integer i=0; i < 7; i++)
 //		signals[i] = ~LEDS[8-i-1];
-		
+/*		
 always@(*)
 	case(LEDS)
 		7'h3F: ch = "0";
@@ -47,7 +47,12 @@ always@(*)
 		7'h7F: ch = "8";
 		7'h67: ch = "9";
 	endcase
-	
+*/
+
+always@(*) begin
+	ch = symbol(LEDS);
+end	
+
 initial begin
 	clk = 1'b0;
 	forever #5 clk = !clk;
@@ -77,16 +82,26 @@ initial begin
 	$finish();
 end
 
-endmodule
-
-/*
 function [7:0] symbol (
 	input [6:0] in
 	);
 	begin
 		case(in)
-			default: symbol = "_";
+			7'h3F: symbol = "0";
+			7'h06: symbol = "1";
+			7'h5B: symbol = "2";
+			7'h4F: symbol = "3";
+			7'h66: symbol = "4";
+			7'h6D: symbol = "5";
+			7'h7D: symbol = "6";
+			7'h07: symbol = "7";
+			7'h7F: symbol = "8";
+			7'h67: symbol = "9";
 		endcase
 	end
 endfunction
-*/
+
+endmodule
+
+
+
