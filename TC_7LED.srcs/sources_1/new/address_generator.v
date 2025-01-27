@@ -26,13 +26,15 @@ module address_generator(
 	input enable,
 	output reg [1:0] q
     );
-    
-always@(posedge clk) begin
+	 
+parameter SEGMENTS = 4;
+
+always@(posedge clk, posedge reset) begin
     	if(reset)
     		q <= 2'b0;
     	else if(enable) begin
     		q <= q + 2'd1;
-    		if(q == 2'd3)
+    		if(q == SEGMENTS)
     			q <= 2'b0;
     	end
     end

@@ -3,25 +3,22 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 01/09/2025 07:04:29 PM
+// Create Date:    20:00:39 01/27/2025 
 // Design Name: 
-// Module Name: tb_address_generator
+// Module Name:    tb_anodes_selection 
 // Project Name: 
 // Target Devices: 
-// Tool Versions: 
+// Tool versions: 
 // Description: 
-// 
+//
 // Dependencies: 
-// 
-// Revision:
+//
+// Revision: 
 // Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Additional Comments: 
+//
 //////////////////////////////////////////////////////////////////////////////////
-
-
-module tb_address_generator();
-
+module tb_anodes_selection();
 reg clk;
 reg RESET = 1'b0;
 wire [1:0] Q;
@@ -38,6 +35,12 @@ clock_divider #(.DIVISOR(12'd4)) clock_divider_1(.clk(clk), .reset(RESET), .out(
 address_generator address_generator_0 (.clk(clk), .reset(RESET), .enable(slow_enable[0]), .q(adrs_0));
 address_generator address_generator_1 (.clk(clk), .reset(RESET), .enable(slow_enable[1]), .q(adrs_1));
 
+wire [3:0] anodes_0;
+wire [3:0] anodes_1;
+//module address_decoder(input [1:0] address, output [3:0] anodes);
+address_decoder address_decoder_0 (.address(adrs_0), .anodes(anodes_0));
+address_decoder address_decoder_1 (.address(adrs_1), .anodes(anodes_1));
+
 initial begin
 	clk = 1'b0;
 	forever #5 clk = ~clk;
@@ -51,8 +54,9 @@ initial begin
 	RESET = 1'b1;
 #30
 	RESET = 1'b0;
-#100
+#1000
 	$finish();
 end
 
 endmodule
+

@@ -23,22 +23,23 @@
 module clock_divider(
 	input clk,
 	input reset,
-	output out
+	output reg out
     );
     
 reg [31:00] counter = 32'd0;
 parameter DIVISOR = 32'd2;
 
-assign out = (counter >= (DIVISOR / 2));
-
 always@(posedge clk) begin
+	out <= 1'b0;
 	if(reset)
 		counter <= 32'd0;
 	else 
 		begin
 			counter <= counter + 32'd1;
-			if(counter >= (DIVISOR - 1))
+			if(counter == (DIVISOR - 1)) begin
+				out <= 1'b1;
 				counter <= 32'd0;
+			end
 			
 		end
 	end

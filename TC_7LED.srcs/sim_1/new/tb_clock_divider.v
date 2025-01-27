@@ -28,8 +28,8 @@ wire OUT;
 wire OUT_2;
 
 //module clock_divider(input clk, input reset, output out);
-clock_divider uut_0(.clk(clk), .reset(RESET), .out(OUT));
-clock_divider #(.DIVISOR(12'd1000)) uut_1(.clk(clk), .reset(RESET), .out(OUT_2));
+clock_divider #(.DIVISOR(12'd2)) uut_0(.clk(clk), .reset(RESET), .out(OUT));
+clock_divider #(.DIVISOR(12'd4)) uut_1(.clk(clk), .reset(RESET), .out(OUT_2));
 initial begin
 	clk = 1'b0;
 	forever #5 clk = ~clk;
@@ -40,6 +40,9 @@ initial begin
 	RESET = 1'b1;
 #100
 	RESET = 1'b0;
+	
+#10000
+	$finish();
 end
 
 endmodule

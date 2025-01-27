@@ -21,20 +21,14 @@
 
 
 module digit_selector(
-	input [1:0] address,
+	input [3:0] anodes,
 	input [3:0] thousands,
 	input [3:0] hundreds,
 	input [3:0] tens,
 	input [3:0] units,	
-	output reg [3:0] digit
+	output[3:0] digit
     );
  
-    always@(*)
-    	case(address)
-    		2'b00: digit = units;
-    		2'b01: digit = tens;
-    		2'b10: digit = hundreds;
-    		2'b11: digit = thousands;
-    	endcase
-    	 
+	assign digit = (anodes[0] ? units : (anodes[1] ? tens : (anodes[2] ? hundreds : (anodes[3] ? thousands : 4'd0))));
+   //assign digit = units; 
 endmodule
