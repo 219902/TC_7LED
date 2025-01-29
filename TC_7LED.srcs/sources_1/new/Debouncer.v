@@ -32,7 +32,7 @@ parameter N = 14;
 reg button_sync_0;
 always @(posedge clk)
 	begin
-		button_sync_0 <= ~raw_button;
+		button_sync_0 <= raw_button;
 	end
 
 reg button_sync_1;

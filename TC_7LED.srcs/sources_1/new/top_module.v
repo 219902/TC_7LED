@@ -25,16 +25,17 @@ module top_module(
 	input BUTTON_RESET,
 	input BUTTON_SIGNAL,
 	input SIGNAL,
-	output [2:0] Enable,
-	output [7:0] SevenSegment,
-	output [7:0] LED
+	output [7:0] an,
+	output [6:0] seg,
+	output dp
     );
-parameter DBC_N = 14;
-parameter SLOW_CLK_N = 12000;
+parameter DBC_N = 17;
+parameter SLOW_CLK_N = 100000;
+parameter SEGMENTS = 4;
 wire reset;
 wire in;
 wire [6:0] leds;
-wire [3:0] anodes;
+wire [SEGMENTS-1:0] anodes;
 wire div_clk;
 wire [1:0] address;
 wire [15:0] bcd_digits;
@@ -50,10 +51,11 @@ assign tens = bcd_digits[7:4];
 assign hundreds = bcd_digits[11:8];
 assign thousands = bcd_digits[15:12];
 
-assign LED = {in, 6'b000000, SIGNAL};
-assign Enable = ~anodes[2:0];
+//assign LED = {in, 6'b000000, SIGNAL};
+assign an = {4'b1111, ~anodes[SEGMENTS-1:0]};
 //assign SevenSegment = {1'b1, 1'b1, ~leds[6:0]};
-assign SevenSegment = {leds, 1'b1};
+assign seg = leds;
+assign dp = 1'b1;
 assign in = signal_btn_state | SIGNAL;
 
 //module debouncer(input clk, input raw_button, output reg button_state, output button_down, output button_up);
@@ -64,7 +66,7 @@ debouncer #(.N(DBC_N)) d_unit_in(.clk(clk), .raw_button(BUTTON_SIGNAL), .button_
 clock_divider #(.DIVISOR(SLOW_CLK_N)) cd_unit_0(.clk(clk), .reset(reset), .out(div_clk));
 
 //module address_generator(input clk, input reset, input enable, output reg [1:0] q);
-address_generator #(.SEGMENTS(3)) ag_unit_0(.clk(clk), .reset(reset), .enable(div_clk), .q(address));
+address_generator #(.SEGMENTS(SEGMENTS)) ag_unit_0(.clk(clk), .reset(reset), .enable(div_clk), .q(address));
 
 //module address_decoder(input [1:0] address, output [3:0] anodes);
 address_decoder ad_unit_0(.address(address), .anodes(anodes));
@@ -75,7 +77,7 @@ rising_edge_counter rec_unit_0(.clk(clk), .in(in), .reset(reset), .out(bcd_digit
 //module digit_selector(input [1:0] address, input [3:0] thousands,	input [3:0] hundreds, input [3:0] tens,	input [3:0] units, output reg [3:0] digit);
 digit_selector ds_unit_0(.anodes(anodes), .thousands(thousands), .hundreds(hundreds), .tens(tens), .units(units), .digit(single_bcd_digit));
 
-//module digit_to_led_transcoder(input [3:0] digit,	output reg [6:0] leds // [gfed_cba]);
+//module digit_to_led_transcoder(input [3:0] digit,	output reg [6:0] leds);
 digit_to_led_transcoder dtlt_unit_0(.clk(clk), .digit(single_bcd_digit), .leds(leds));
 
 endmodule

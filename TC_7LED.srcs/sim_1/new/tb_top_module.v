@@ -24,8 +24,9 @@ module tb_top_module();
 
 reg clk;
 reg RESET = 1'b0;
-reg IN = 1'b0;
-wire [2:0] ANODES;
+reg SIGNAL;
+reg BUTTON_SIGNAL = 1'b0;
+wire [7:0] ANODES;
 wire [6:0] LEDS;
 wire dp;
 //module top_module(
@@ -35,7 +36,7 @@ wire dp;
 //	output [2:0] Enable,
 //	output [7:0] SevenSegment
  //   );
-top_module #(.DBC_N(2), .SLOW_CLK_N(100)) uut(.clk(clk), .BUTTON_RESET(RESET), .BUTTON_SIGNAL(IN), .Enable(ANODES), .SevenSegment({LEDS,dp}));
+top_module #(.DBC_N(2), .SLOW_CLK_N(10), .SEGMENTS(4)) uut(.clk(clk), .BUTTON_SIGNAL(BUTTON_SIGNAL), .BUTTON_RESET(RESET), .SIGNAL(SIGNAL), .an(ANODES), .seg(LEDS), .dp(dp));
 
 initial begin
 	clk = 1'b0;
@@ -44,49 +45,49 @@ end
 
 initial begin
 	RESET = 1'b1;
-#50
+#500
 	RESET = 1'b0;
 #50
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;
+	SIGNAL = 1'b0;
 #300
-	IN = 1'b1;
+	SIGNAL = 1'b1;
 #300
-	IN = 1'b0;	
-#1000
+	SIGNAL = 1'b0;	
+#100
 	$finish();
 end
 
@@ -100,16 +101,16 @@ function [7:0] symbol (
 	);
 	begin
 		case(in)
-			~7'h3F: symbol = "0";
-			~7'h06: symbol = "1";
-			~7'h5B: symbol = "2";
-			~7'h4F: symbol = "3";
-			~7'h66: symbol = "4";
-			~7'h6D: symbol = "5";
-			~7'h7D: symbol = "6";
-			~7'h07: symbol = "7";
-			~7'h7F: symbol = "8";
-			~7'h67: symbol = "9";
+			7'h01: symbol = "0";
+			7'h4F: symbol = "1";
+			7'h12: symbol = "2";
+			7'h06: symbol = "3";
+			7'h4C: symbol = "4";
+			7'h49: symbol = "5";
+			7'h24: symbol = "6";
+			7'h0F: symbol = "7";
+			7'h00: symbol = "8";
+			7'h04: symbol = "9";
 		endcase
 	end
 endfunction
